@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "50995903157",
+    "project_id": "mycallendar-cbab6",
+    "storage_bucket": "mycallendar-cbab6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50995903157:android:60c9797056a2487efc1cfc",
+        "android_client_info": {
+          "package_name": "com.example.mycallendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50995903157-dpq6413n7oqj4146e9q1kmni0qkk5gtp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-QxwUEeW9gD9wPmkm-427bKJ9y4FEz_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50995903157-dpq6413n7oqj4146e9q1kmni0qkk5gtp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "50995903157-m5edpd8t7q72nu2mplfg8p4mvargcb2c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mycallendar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
