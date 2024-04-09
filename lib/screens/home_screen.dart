@@ -1,7 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mycallendar/screens/login_screen.dart';
+import 'package:mycallendar/widgets/google_button.dart';
+
+import '../services/auth_google_service.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String routname = 'HomeScreen';
   const HomeScreen({super.key});
 
   @override
@@ -26,22 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _user == null ? Center(child: _googleButton()) : _userData());
-  }
-
-  Widget _googleButton() {
-    return SizedBox(
-      height: 50,
-      width: 300,
-      child: ElevatedButton.icon(
-        onPressed: _handleGoogleSignIn,
-        icon: Image.asset(
-          'assets/google_icon.png',
-          scale: 35,
-        ),
-        label: const Text('Entra con Google'),
-      ),
-    );
+        body: _user == null ? const Center(child: GoogleButton()) : _userData());
   }
 
   Widget _userData() {
@@ -62,26 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontFamily: AutofillHints.name,
                 fontWeight: FontWeight.bold),
           ),
-          TextButton(onPressed: _logout, child: const Text("Cerrar Sesión"))
+          TextButton(onPressed: _logOut, child: const Text("Cerrar Sesión"))
         ]),
       ),
     );
   }
 
-  void _handleGoogleSignIn() {
+  void _logOut() {
+    final authGoogleService = AuthGoogleService();
     try {
-      GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
-      _auth.signInWithProvider(_googleAuthProvider);
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  void _logout() {
-    try {
-      _auth.signOut();
-    } catch (error) {
-      print(error);
+      authGoogleService.logOut();
+      Navigator.popAndPushNamed(context, LoginScreen.routename);
+    } catch (e) {
+      print('error');
     }
   }
 }

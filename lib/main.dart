@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mycallendar/firebase_options.dart';
 import 'package:mycallendar/screens/home_screen.dart';
+import 'package:mycallendar/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      initialRoute: LoginScreen.routename,
+      routes: {
+        LoginScreen.routename:(context) => const LoginScreen(),
+        HomeScreen.routname:(context) => const HomeScreen(),
+      },
     );
   }
 }
