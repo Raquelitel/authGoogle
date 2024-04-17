@@ -2,7 +2,10 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mycallendar/providers/user_provider.dart';
+import 'package:mycallendar/screens/home_screen.dart';
 import 'package:mycallendar/services/auth_google_service.dart';
+import 'package:provider/provider.dart';
 
 class GoogleButton extends StatelessWidget {
   const GoogleButton({super.key});
@@ -19,14 +22,23 @@ class GoogleButton extends StatelessWidget {
             final user = await authGoogleService.singInWithGoogle();
 
             if (user != null) {
+              final userProvider =
+                  Provider.of<UserProvider>(context, listen: false);
+              userProvider.setUser(user);
+
               print(user);
-              Navigator.popAndPushNamed(context, 'HomeScreen');
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
             }
           } on FirebaseAuthException catch (error) {
             print(error.message);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(error.message ?? 'Upss... algo salió mal')));
           } catch (error) {
+            print(error);
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Error en la conexión")));
           }
