@@ -1,10 +1,7 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mycallendar/screens/login_screen.dart';
-import 'package:mycallendar/widgets/google_button.dart';
-
+import 'package:mycallendar/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../services/auth_google_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,40 +13,47 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  User? _user;
+  late UserProvider userProvider;
+  late User? currentUser;
 
   @override
   void initState() {
     super.initState();
-    _auth.authStateChanges().listen((event) {
-      setState(() {
-        _user = event;
-      });
-    });
+    currentUser = FirebaseAuth.instance.currentUser;
+    userProvider = Provider.of<UserProvider>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _user == null ? const Center(child: GoogleButton()) : _userData());
+    return Scaffold(body: _userData());
   }
 
   Widget _userData() {
+    String userName = currentUser?.providerData[0].displayName ?? "Bienvenid@!";
+    String avatar = currentUser?.photoURL ?? '';
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: Image.asset(
+              child: avatar.isNotEmpty
+                ? Image.network(
+                    avatar,
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  )
+              : Image.asset(
                 'assets/teideequilibrio.jpeg',
                 fit: BoxFit.cover,
+                width: 100,
+                height: 100,
               )),
-          const Text(
-            "🚀 Raquel Martín 🚀",
-            style: TextStyle(
+          Text(
+            "🚀 $userName 🚀",
+            style: const TextStyle(
                 fontSize: 24,
                 fontFamily: AutofillHints.name,
                 fontWeight: FontWeight.bold),
@@ -64,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final authGoogleService = AuthGoogleService();
     try {
       authGoogleService.logOut();
-      Navigator.popAndPushNamed(context, LoginScreen.routename);
+      Navigator.pop(context);
     } catch (e) {
-      print('error');
+      print(e);
     }
   }
 }
